@@ -13,13 +13,13 @@ let Details=require('./src/model/registration')
 app.use(express.static(path.join(__dirname,'src/public')))
 app.post('/registor',async(req,res)=>{
     try{
-        let data= await new Details(req.body)
-        let  result=data.save()
+        let data= new Details(req.body)
+        let  result= await data.save()
         res.send({msg:true})
     }
     catch(e)
     {
-           res.status(401).send({msg:false})
+           res.status(401).send({msg:e})
     }
    
 

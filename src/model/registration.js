@@ -15,7 +15,7 @@ let registrationSchema = new mongoose.Schema({
   },
   userName: {
     type: String,
-    unique: true,
+    unique: [true,'user is already there'],
     require: true,
     validate(value) {
       const usernameRegex = /^[a-zA-Z0-9_][a-zA-Z0-9_]*$/;
