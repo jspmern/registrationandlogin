@@ -15,12 +15,11 @@ app.post('/registor',async(req,res)=>{
     try{
         let data= await new Details(req.body)
         let  result=data.save()
-        console.log('this is result')
-        res.send('crated sucessfully')
+        res.send({msg:true})
     }
     catch(e)
     {
-           res.status(401).send('somthing error while crating db')
+           res.status(401).send({msg:false})
     }
    
 
