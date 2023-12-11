@@ -47,14 +47,14 @@
         function formSubmit(e)
         {
             
-            let fullName=document.getElementById('fullName').value
-            let userName=document.getElementById('userName').value
-            let password=document.getElementById('password').value
-            let confirmPassword=document.getElementById('confirmPassword').value
-            let email=document.getElementById('email').value
-            let mobile=document.getElementById('mobile').value
+            let fullName=document.getElementById('fullName')
+            let userName=document.getElementById('userName')
+            let password=document.getElementById('password')
+            let confirmPassword=document.getElementById('confirmPassword')
+            let email=document.getElementById('email')
+            let mobile=document.getElementById('mobile')
             let profilePicture=document.getElementById('profilePicture') 
-            if(!fullName || !userName || !password || !confirmPassword || !email || !mobile)
+            if(!fullName.value || !userName.value || !password.value || !confirmPassword.value || !email.value || !mobile.value)
             {
                 alert('all field is required')
                 return
@@ -65,20 +65,13 @@
                    return
             }
             else{
-                    let obj={fullName,userName,password,email,mobile,profilePicture:profilePicture.files[0]}
-                    console.log('this is noraml obj',obj)
-                    console.log('this is stringifyoje',JSON.stringify(obj))
-
                     let formData=new FormData()
-                    formData.append('fullName',fullName)
-                    formData.append('userName',userName)
-                    formData.append('password',password)
-                    formData.append('email',email)
-                    formData.append('mobile',mobile)
+                    formData.append('fullName',fullName.value)
+                    formData.append('userName',userName.value)
+                    formData.append('password',password.value)
+                    formData.append('email',email.value)
+                    formData.append('mobile',mobile.value)
                     formData.append('profilePicture',profilePicture.files[0])
-                    console.log(formData.get('fullName'))
-                    console.log(formData.get('profilePicture'))
-                 
                     let url="http://localhost:8080/registor"
                     let option={
                         method:"POST",
@@ -91,8 +84,9 @@
                           if(item.msg)
                           {
                             
-                            //window.location.href="http://localhost/login"
+                            // window.location.href="http://localhost/login"
                           }
+                        
                     }).catch((err)=>{
                         console.log('somthing error')
                     })
