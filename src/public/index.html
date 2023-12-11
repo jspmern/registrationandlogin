@@ -12,38 +12,41 @@
             <div class="col">
                 <h1>hello i am registor page</h1>
                 <div >
-                     fullName:<input type="text" placeholder="enter your fullName" id="fullName"/>
+                    <form enctype="multipart/form-data"  >
+                     fullName:<input type="text" placeholder="enter your fullName" id="fullName" name="fullName"/>
                      <br/>
                      <br/>
-                     userName:<input type="text" placeholder="enter your userName" id="userName"/>
+                     userName:<input type="text" placeholder="enter your userName" id="userName" name="userName"/>
                      <br/>
                      <br/>
-                     password:<input type="password" placeholder="enter your pass" id="password"/>
+                     password:<input type="password" placeholder="enter your pass" id="password" name="password"/>
                      <br/>
                      <br/>
-                     confirmPassword:<input type="confirmPassword" placeholder="enter your pass" id="confirmPassword"/>
+                     confirmPassword:<input type="confirmPassword" placeholder="enter your pass" id="confirmPassword" name="confirmPassword"/>
                      <br/>
                      <br/>
-                     email:<input type="email" placeholder="enter your email" id="email"/>
+                     email:<input type="email" placeholder="enter your email" id="email" name="email"/>
                      <br/>
                      <br/>
-                     mobile:<input type="text" placeholder="enter your mobile no" id="mobile"/>
+                     mobile:<input type="text" placeholder="enter your mobile no" id="mobile" name="mobile"/>
                      <br/>
                      <br/>
-                    profilePicture:<input type="file" placeholder="upload your profile picture" id="profilePicture"/>
+                    profilePicture:<input type="file" placeholder="upload your profile picture" id="profilePicture" name="profilePicture" accept="image/*" required/>
                      <br/>
                      <br/>
-                     <button class="btn btn-primary" id="registor">Registor</button>
+                     <button class="btn btn-primary" onclick="formSubmit()" type="button">Registor</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
       <!-- //this is my js -->
       <script>
-        let registor_btn=document.getElementById('registor')
-        registor_btn.addEventListener('click',formSubmit)
-        function formSubmit()
+       // let registor_btn=document.getElementById('registor')
+       // registor_btn.addEventListener('submit',formSubmit)
+        function formSubmit(e)
         {
+            
             let fullName=document.getElementById('fullName').value
             let userName=document.getElementById('userName').value
             let password=document.getElementById('password').value
@@ -62,19 +65,33 @@
                    return
             }
             else{
-                    let obj={fullName,userName,password,email,mobile,profilePicture:"https://abc.com"}
+                    let obj={fullName,userName,password,email,mobile,profilePicture:profilePicture.files[0]}
+                    console.log('this is noraml obj',obj)
+                    console.log('this is stringifyoje',JSON.stringify(obj))
+
+                    let formData=new FormData()
+                    formData.append('fullName',fullName)
+                    formData.append('userName',userName)
+                    formData.append('password',password)
+                    formData.append('email',email)
+                    formData.append('mobile',mobile)
+                    formData.append('profilePicture',profilePicture.files[0])
+                    console.log(formData.get('fullName'))
+                    console.log(formData.get('profilePicture'))
+                 
                     let url="http://localhost:8080/registor"
                     let option={
                         method:"POST",
-                        body:JSON.stringify(obj),
-                        headers:{"Content-Type":'application/json'}
+                        body:formData, 
                     }
                     fetch(url,option).then((item)=>{
                             return item.json() 
                     }).then((item)=>{
+                        console.log(item)
                           if(item.msg)
                           {
-                            window.location.href="http://localhost/login"
+                            
+                            //window.location.href="http://localhost/login"
                           }
                     }).catch((err)=>{
                         console.log('somthing error')
