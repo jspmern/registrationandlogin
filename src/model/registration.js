@@ -1,6 +1,8 @@
 let mongoose = require("mongoose");
 //this is the thrid party validator
 let validator = require("validator");
+//this is for bcrypt js
+let bcrypt = require("bcryptjs");
 //this is the registration schema design
 let registrationSchema = new mongoose.Schema({
   fullName: {
@@ -15,7 +17,7 @@ let registrationSchema = new mongoose.Schema({
   },
   userName: {
     type: String,
-    unique: [true,'user is already there'],
+    unique: [true, "user is already there"],
     require: true,
     validate(value) {
       const usernameRegex = /^[a-zA-Z0-9_][a-zA-Z0-9_]*$/;
@@ -37,9 +39,9 @@ let registrationSchema = new mongoose.Schema({
     },
   },
   mobile: {
-    type:String,
+    type: String,
     require: true,
-    min:10,
+    min: 10,
   },
   email: {
     require: true,
@@ -56,7 +58,18 @@ let registrationSchema = new mongoose.Schema({
     type: String,
   },
 });
+//this is the middlware for hashing the password
+//here it self don't give arrow function otherwise you are getting undefined so , give expression
+//here it self you have to use next for giving next program to run
+
+registrationSchema.pre("save", async function (next) {
+  if (this.isModified("password")) {
+    //here i am going to give 10 round
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+  next();
+});
 
 //this is for model
-let Detail = mongoose.model('Student',registrationSchema)
-module.exports=Detail
+let Detail = mongoose.model("Student", registrationSchema);
+module.exports = Detail;
