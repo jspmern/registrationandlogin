@@ -39,9 +39,9 @@
           headers:{"Content-Type":"application/json"}
         });
         let data = await res.json();
-          if(data.msg)
+          if(data.msg=="done")
           {
-            console.log('hello')
+             location.href="product"
           }
       });
     </script>

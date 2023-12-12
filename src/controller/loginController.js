@@ -27,11 +27,9 @@ let loginController = async (req, res) => {
   let { email, password } = req.body;
   let findData = await Details.findOne({ email: email });
   if (findData) {
-    console.log(findData)
     let isMatch =  await bcrypt.compare(password, findData.password);
-    console.log(isMatch)
     if (isMatch) {
-      res.send({ msg: "sucuessfully login" });
+      res.send({msg:'done'});
     } else {
       res.send({ msg: "password incorrect" });
     }
@@ -39,4 +37,9 @@ let loginController = async (req, res) => {
     res.send({ msg: "user is not found" });
   }
 };
-module.exports = { registorController, loginTemp, loginController };
+let productController=(req,res)=>{
+  let productPath=path.join(__dirname,'../public/product.html')
+  console.log(productPath)
+  res.sendFile(productPath)
+}
+module.exports = { registorController, loginTemp, loginController,productController };
