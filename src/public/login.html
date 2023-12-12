@@ -1,16 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-         <h1>hello i am login</h1>
-           <form>
-            <input type="enter your username" name="userName" id="userName"/>
-            <password type="enter the password" name="password" id="password"/>
-            <button id="btn">login</button>
-           </form>
-</body>
+  </head>
+  <body>
+    <h1>hello i am login</h1>
+
+    <input
+      type="text"
+      name="userName"
+      id="userName"
+      placeholder="Enter your email"
+    />
+    <br />
+    <br />
+    <input
+      type="password"
+      name="password"
+      id="password"
+      placeholder="enter the password"
+    />
+    <br />
+    <button id="btn">login</button>
+
+    <script>
+      let email = document.getElementById("userName");
+      let password = document.getElementById("password");
+      let btn = document.getElementById("btn");
+      btn.addEventListener("click", async (e) => {
+        //e.preventDefault();
+        let obj = { email: userName.value, password: password.value };
+        console.log(obj);
+        let res = await fetch("/login",{
+          method: "POST",
+          body:JSON.stringify(obj),
+          headers:{"Content-Type":"application/json"}
+        });
+        let data = await res.json();
+          if(data.msg)
+          {
+            console.log('hello')
+          }
+      });
+    </script>
+  </body>
 </html>

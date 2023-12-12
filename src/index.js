@@ -1,8 +1,6 @@
 let express = require("express");
- 
 let path = require("path");
 let loginRoute = require("./route/loginRoute");
-
 let app = express();
 const dotenvPath = path.resolve(__dirname, '../.env');
 require('dotenv').config({ path: dotenvPath });
