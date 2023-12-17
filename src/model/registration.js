@@ -4,11 +4,12 @@ let validator = require("validator");
 //this is for bcrypt js
 let bcrypt = require("bcryptjs");
 //this is for requir jwt
-let jwt=require('jsonwebtoken')
+let jwt = require("jsonwebtoken");
 //this is for path module
-let path=require('path')
+let path = require("path");
 //this is for the env
-let dotenv=require('dotenv').config({path:path.join(__dirname,'../.env')})
+require("dotenv").config({ path: path.join(__dirname, "../.env") });
+
 //this is the registration schema design
 let registrationSchema = new mongoose.Schema({
   fullName: {
@@ -64,12 +65,14 @@ let registrationSchema = new mongoose.Schema({
     type: String,
   },
   //this is for storing the token and iam storing in the form of array of object may be people login from different different devices
-  tokens:[{
-    token:{
-      type:String,
-      required:true
-    }
-  }]
+  tokens: [
+    {
+      token: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
 });
 //this is the middlware for hashing the password
 //here it self don't give arrow function otherwise you are getting undefined so , give expression
@@ -84,21 +87,16 @@ registrationSchema.pre("save", async function (next) {
 });
 
 //this is for genration token as a method form schema
-registrationSchema.methods.generateToken = async function() {
-  try{
-     let token=jwt.sign({ _id: this._id },process.env.SERECT_KEY);
-     this.tokens=[...this.tokens,{token:token}]
-     await this.save()
-     return token
+registrationSchema.methods.generateToken = async function () {
+  try {
+    let token = jwt.sign({ _id: this._id }, process.env.SERECT_KEY);
+    this.tokens = [...this.tokens, { token: token }];
+    await this.save();
+    return token;
+  } catch (error) {
+    res.send("somthing error while creating error");
   }
-  catch(error){
-    res.send('somthing error while creating error')
-  }
-  
- 
 };
-
-
 
 //this is for model
 let Detail = mongoose.model("Student", registrationSchema);

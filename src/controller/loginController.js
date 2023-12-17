@@ -30,12 +30,16 @@ let loginTemp = (req, res) => {
   res.sendFile(templatePath);
 };
 let loginController = async (req, res) => {
-  console.log("hello i am login", req.cookies.jwt);
   // userName: 'fjkdjk', password: 'fjdj'
   let { email, password } = req.body;
   let findData = await Details.findOne({ email: email });
   if (findData) {
     let isMatch = await bcrypt.compare(password, findData.password);
+    let token = await findData.generateToken();
+    res.cookie("jwt", token, {
+      expires: new Date(Date.now() + 50000),
+      httpOnly: true,
+    });
     if (isMatch) {
       res.send({ msg: "done" });
     } else {
@@ -46,13 +50,25 @@ let loginController = async (req, res) => {
   }
 };
 let productController = (req, res) => {
+  let token=req.cookies.jwt
+  console.log(token)
   let productPath = path.join(__dirname, "../public/product.html");
-  console.log(productPath);
   res.sendFile(productPath);
+};
+let logouthandler = async (req, res) => {
+  console.log(req.user)
+  req.user.tokens=req.user.tokens.filter((item)=>{
+    return item.token !==req.token
+  })
+  res.clearCookie('jwt')
+  await req.user.save()
+  let loginPath = path.join(__dirname, "../public/login.html");
+  res.sendFile(loginPath);
 };
 module.exports = {
   registorController,
   loginTemp,
   loginController,
   productController,
+  logouthandler,
 };
