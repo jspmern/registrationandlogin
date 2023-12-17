@@ -70,6 +70,14 @@ registrationSchema.pre("save", async function (next) {
   next();
 });
 
+//this is for genration token as a method form schema
+registrationSchema.method.genrateToken=function()
+{
+
+}
+
+
+
 //this is for model
 let Detail = mongoose.model("Student", registrationSchema);
 module.exports = Detail;
