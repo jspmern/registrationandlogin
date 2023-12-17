@@ -7,5 +7,6 @@ router.post("/registor", upload.single("profilePicture"),registorController);
 //this is for login
 router.get('/login',loginTemp)
 router.post('/login',loginController)  
-router.get('/product',productController)  
+router.get('/product',productController) 
+ 
 module.exports = router;
